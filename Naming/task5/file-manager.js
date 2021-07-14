@@ -4,66 +4,66 @@ const fs = require('fs');
 const PropertyUtil = require('./thirdparty/property-util');
 const InvalidFileTypeError = require('./thirdparty/invalid-file-type-error');
 const InvalidDirectoryException = require('./thirdparty/invalid-directory-exception');
-const FileExtPred = require('./file-ext-pred');
+const FileExtension = require('./file-extension');
 
-const TYPES = ['jpg', 'png'];
-const TYPES2 = ['pdf', 'doc'];
+const LIST_OF_IMAGE_FILE_TYPES = ['jpg', 'png'];
+const LIST_OF_TEXT_FILE_TYPES = ['pdf', 'doc'];
 
 module.exports = class FileManager {
     constructor() {
-        this.bp = PropertyUtil.loadProperty('basePath');
+        this.baseFileProperty = PropertyUtil.loadProperty('basePath');
     }
 
-    retrieveFile(fileName) {
-        this.validateFileType(fileName);
-        const dirPath = this.bp + path.sep;
-        return path.resolve(dirPath, fileName);
+    retrieveFile(file) {
+        this.validateFileType(file);
+        const directory = this.baseFileProperty + path.sep;
+        return path.resolve(directory, file);
     }
 
     listAllImages() {
-        return this.files(this.bp, TYPES);
+        return this.getFiles(this.baseFileProperty, LIST_OF_IMAGE_FILE_TYPES);
     }
 
     listAllDocumentFiles() {
-        return this.files(this.bp, TYPES2);
+        return this.getFiles(this.baseFileProperty, LIST_OF_TEXT_FILE_TYPES);
     }
 
-    validateFileType(fileName) {
-        if (this.isInvalidFileType(fileName)) {
-            throw new InvalidFileTypeError('File type not Supported: ' + fileName);
+    validateFileType(file) {
+        if (this.isInvalidFileType(file)) {
+            throw new InvalidFileTypeError('File type not Supported: ' + file);
         }
     }
 
-    isInvalidFileType(fileName) {
-        return this.isInvalidImage(fileName) && this.isInvalidDocument(fileName);
+    isInvalidFileType(file) {
+        return this.isInvalidImage(file) && this.isInvalidDocument(file);
     }
 
-    isInvalidImage(fileName) {
-        const imageExtensionsPredicate = new FileExtPred(TYPES);
-        return !imageExtensionsPredicate.test(fileName);
+    isInvalidImage(file) {
+        const image = new FileExtension(LIST_OF_IMAGE_FILE_TYPES);
+        return !image.checkExtension(file);
     }
 
-    isInvalidDocument(fileName) {
-        const documentExtensionsPredicate = new FileExtPred(TYPES2);
-        return !documentExtensionsPredicate.test(fileName);
+    isInvalidDocument(file) {
+        const document = new FileExtension(LIST_OF_TEXT_FILE_TYPES);
+        return !document.checkExtension(file);
     }
 
-    files(directoryPath, allowedExtensions) {
-        const pred = new FileExtPred(allowedExtensions);
-        return this.directory(directoryPath).filter((str) => {
-            return pred.test(str);
+    getFiles(path, extension) {
+        const file = new FileExtension(extension);
+        return this.getDirectory(path).filter((name) => {
+            return file.checkExtension(name);
         });
     }
 
-    directory(directoryPath) {
-        const dirSt = fs.statSync(directoryPath);
-        this.validateDirectory(dirSt, directoryPath);
-        return fs.readdirSync(directoryPath);
+    getDirectory(path) {
+        const directory = fs.statSync(path);
+        this.validateDirectory(directory, path);
+        return fs.readdirSync(path);
     }
 
-    validateDirectory(stats, directoryPath) {
+    validateDirectory(stats, path) {
         if (this.isNotDirectory(stats)) {
-            throw new InvalidDirectoryException('Invalid directory found: ' + directoryPath);
+            throw new InvalidDirectoryException('Invalid directory found: ' + path);
         }
     }
 

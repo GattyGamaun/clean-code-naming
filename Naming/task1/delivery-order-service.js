@@ -1,25 +1,25 @@
 const NotDeliverableOrderError = require('./thirdparty/not-deliverable-order-error');
 
 module.exports = class DeliveryOrderService {
-    constructor(arg1, arg2) {
-        this.mDeliveryService = arg1;
-        this.mOrderFulfilmentService = arg2;
+    constructor(delivery, order) {
+        this.primaryDeliveryService = delivery;
+        this.fulfilmentOrderService = order;
     }
 
-    submitOrder(pOrder) {
-        if (this.mDeliveryService.isDeliverable(pOrder)) {
-            const products = pOrder.getProducts();
-            this.mOrderFulfilmentService.fulfilProducts(products);
+    submitOrderToFulfilmentOrderService(order) {
+        if (this.primaryDeliveryService.isDeliverable(order)) {
+            const products = order.getProducts();
+            this.fulfilmentOrderService.fulfilProducts(products);
         } else {
             throw new NotDeliverableOrderError();
         }
     }
 
-    setDeliveryService(pDeliveryService) {
-        this.mDeliveryService = pDeliveryService;
+    setPrimaryDeliveryService(service) {
+        this.primaryDeliveryService = service;
     }
 
-    setOrderFulfilmentService(pOrderFulfilmentService) {
-        this.mOrderFulfilmentService = pOrderFulfilmentService;
+    setFulfilmentOrderService(service) {
+        this.fulfilmentOrderService = service;
     }
 };

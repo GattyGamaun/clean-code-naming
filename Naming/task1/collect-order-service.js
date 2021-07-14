@@ -1,23 +1,25 @@
 const { message } = require('./thirdparty/message');
 
 module.exports = class CollectOrderService {
-    constructor(arg1, arg2) {
-        this.ser1 = arg1;
-        this.ser2 = arg2;
+    constructor(order, customer) {
+        this.administrativeOrderService = order;
+        this.customerGlobalService = customer;
+        this.INFO_NOTIFICATION_LEVEL = 4;
+        this.CRITICAL_NOTIFICATION_LEVEL = 1;
     }
 
-    submitOrder(pOrder) {
-        if (this.ser1.isEligibleForCollection(pOrder))
-            this.ser2.notifyCustomer(message.READY_FOR_COLLECT, 4); // 4 - info notification level
+    submitOrderToCustomer(order) {
+        if (this.administrativeOrderService.isEligibleForCollection(order))
+            this.customerGlobalService.notifyCustomer(message.READY_FOR_COLLECT, this.INFO_NOTIFICATION_LEVEL);
         else
-            this.ser2.notifyCustomer(message.IMPOSSIBLE_TO_COLLECT, 1); // 1 - critical notification level
+            this.customerGlobalService.notifyCustomer(message.IMPOSSIBLE_TO_COLLECT, this.CRITICAL_NOTIFICATION_LEVEL);
     }
 
-    setSer1(ser1) {
-        this.ser1 = ser1;
+    setAdministrativeOrderService(service) {
+        this.administrativeOrderService = service;
     }
 
-    setSer2(ser2) {
-        this.ser2 = ser2;
+    setCustomerGlobalService(service) {
+        this.customerGlobalService = service;
     }
 };
