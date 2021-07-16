@@ -1,8 +1,8 @@
 const os = require('os');
 
-const PLUS = '+';
-const PIPE = '|';
-const MINUS = '-';
+const CORNER_BOX = '+';
+const VERTICAL_SIDE_BOX = '|';
+const HORIZONTAL_SIDE_BOX = '-';
 const DIVIDER_BETWEEN_KEY_VALUE = ' _ ';
 
 function repeat(symbol, length) {
@@ -15,11 +15,11 @@ function repeat(symbol, length) {
 
 function makeFrameWithContent(key, value) {
     const content = key + DIVIDER_BETWEEN_KEY_VALUE + value;
-    const border = repeat(MINUS, content.length);
+    const border = repeat(HORIZONTAL_SIDE_BOX, content.length);
 
-    return PLUS + border + PLUS + os.EOL
-         + PIPE + content + PIPE + os.EOL
-         + PLUS + border + PLUS + os.EOL;
+    return CORNER_BOX + border + CORNER_BOX + os.EOL
+         + VERTICAL_SIDE_BOX + content + VERTICAL_SIDE_BOX + os.EOL
+         + CORNER_BOX + border + CORNER_BOX + os.EOL;
 }
 
 function showFrames() {

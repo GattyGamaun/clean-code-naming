@@ -21,7 +21,7 @@ describe('user', () => {
 
         it('should print admin user with rating', () => {
             let bob = new user('Bob', '14.02.1974', [], true);
-            bob.setSubordinateRating(33);
+            bob.setRating(33);
 
             assert.strictEqual(bob.toString(), 'User [dateOfBirth=14.02.1974, name=Bob, isAdmin=true, subordinates=[], rating=33]');
         });

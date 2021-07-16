@@ -6,8 +6,8 @@ const InvalidFileTypeError = require('./thirdparty/invalid-file-type-error');
 const InvalidDirectoryException = require('./thirdparty/invalid-directory-exception');
 const FileExtensionPredicator = require('./file-extension');
 
-const LIST_OF_JPG_PNG_FILE_TYPES = ['jpg', 'png'];
-const LIST_OF_DOC_PDF_FILE_TYPES = ['pdf', 'doc'];
+const ALLOWED_IMAGES_EXTENSIONS = ['jpg', 'png'];
+const ALLOWED_DOCUMENTS_EXTENSIONS = ['pdf', 'doc'];
 
 module.exports = class FileManager {
     constructor() {
@@ -21,11 +21,11 @@ module.exports = class FileManager {
     }
 
     listAllImages() {
-        return this.getFiles(this.baseFileProperty, LIST_OF_JPG_PNG_FILE_TYPES);
+        return this.getFiles(this.baseFileProperty, ALLOWED_IMAGES_EXTENSIONS);
     }
 
     listAllDocumentFiles() {
-        return this.getFiles(this.baseFileProperty, LIST_OF_DOC_PDF_FILE_TYPES);
+        return this.getFiles(this.baseFileProperty, ALLOWED_DOCUMENTS_EXTENSIONS);
     }
 
     validateFileType(file) {
@@ -39,12 +39,12 @@ module.exports = class FileManager {
     }
 
     isInvalidImage(file) {
-        const image = new FileExtensionPredicator(LIST_OF_JPG_PNG_FILE_TYPES);
+        const image = new FileExtensionPredicator(ALLOWED_IMAGES_EXTENSIONS);
         return !image.checkExtension(file);
     }
 
     isInvalidDocument(file) {
-        const document = new FileExtensionPredicator(LIST_OF_DOC_PDF_FILE_TYPES);
+        const document = new FileExtensionPredicator(ALLOWED_DOCUMENTS_EXTENSIONS);
         return !document.checkExtension(file);
     }
 
