@@ -4,10 +4,10 @@ const fs = require('fs');
 const PropertyUtil = require('./thirdparty/property-util');
 const InvalidFileTypeError = require('./thirdparty/invalid-file-type-error');
 const InvalidDirectoryException = require('./thirdparty/invalid-directory-exception');
-const FileExtension = require('./file-extension');
+const FileExtensionPredicator = require('./file-extension');
 
-const LIST_OF_IMAGE_FILE_TYPES = ['jpg', 'png'];
-const LIST_OF_TEXT_FILE_TYPES = ['pdf', 'doc'];
+const LIST_OF_JPG_PNG_FILE_TYPES = ['jpg', 'png'];
+const LIST_OF_DOC_PDF_FILE_TYPES = ['pdf', 'doc'];
 
 module.exports = class FileManager {
     constructor() {
@@ -21,11 +21,11 @@ module.exports = class FileManager {
     }
 
     listAllImages() {
-        return this.getFiles(this.baseFileProperty, LIST_OF_IMAGE_FILE_TYPES);
+        return this.getFiles(this.baseFileProperty, LIST_OF_JPG_PNG_FILE_TYPES);
     }
 
     listAllDocumentFiles() {
-        return this.getFiles(this.baseFileProperty, LIST_OF_TEXT_FILE_TYPES);
+        return this.getFiles(this.baseFileProperty, LIST_OF_DOC_PDF_FILE_TYPES);
     }
 
     validateFileType(file) {
@@ -39,17 +39,17 @@ module.exports = class FileManager {
     }
 
     isInvalidImage(file) {
-        const image = new FileExtension(LIST_OF_IMAGE_FILE_TYPES);
+        const image = new FileExtensionPredicator(LIST_OF_JPG_PNG_FILE_TYPES);
         return !image.checkExtension(file);
     }
 
     isInvalidDocument(file) {
-        const document = new FileExtension(LIST_OF_TEXT_FILE_TYPES);
+        const document = new FileExtensionPredicator(LIST_OF_DOC_PDF_FILE_TYPES);
         return !document.checkExtension(file);
     }
 
     getFiles(path, extension) {
-        const file = new FileExtension(extension);
+        const file = new FileExtensionPredicator(extension);
         return this.getDirectory(path).filter((name) => {
             return file.checkExtension(name);
         });

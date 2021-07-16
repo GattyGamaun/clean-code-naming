@@ -1,4 +1,4 @@
-module.exports = class FileExtension {
+module.exports = class FileExtensionPredicator {
     constructor(extension) {
         this.fileExstension = extension;
     }

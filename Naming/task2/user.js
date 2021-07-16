@@ -1,18 +1,18 @@
 module.exports = class User {
     constructor(name, date, subordinates = [], isAdmin = false) {
-        this.sName = name;
+        this.name = name;
         this.birthDate = date;
-        this.isUserAdmin = isAdmin;
+        this.isAdmin = isAdmin;
         this.subordinateList = subordinates;
-        this.subordinateRating = 0;
+        this.rating = 0;
     }
 
-    getWholeUserDataInTheStringFormat() {
-        return 'User [dateOfBirth=' + this.birthDate + ', name=' + this.sName + ', isAdmin=' + this.isUserAdmin + ', subordinates=['
-            + this.subordinateList.map(subordinate => subordinate.getWholeUserDataInTheStringFormat()).join(', ') + '], rating=' + this.subordinateRating + ']';
+    toString() {
+        return 'User [dateOfBirth=' + this.birthDate + ', name=' + this.name + ', isAdmin=' + this.isAdmin + ', subordinates=['
+            + this.subordinateList.map(subordinate => subordinate.toString()).join(', ') + '], rating=' + this.rating + ']';
     }
 
     setSubordinateRating(rating) {
-        this.subordinateRating = rating;
+        this.rating = rating;
     }
 }

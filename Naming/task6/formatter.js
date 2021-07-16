@@ -3,9 +3,9 @@ const os = require('os');
 const PLUS = '+';
 const PIPE = '|';
 const MINUS = '-';
-const UNDERSCORE = ' _ ';
+const DIVIDER_BETWEEN_KEY_VALUE = ' _ ';
 
-function repeatMinuses(symbol, length) {
+function repeat(symbol, length) {
     let result = '';
     for (let i = 0; i < length; i++) {
         result += symbol;
@@ -14,17 +14,17 @@ function repeatMinuses(symbol, length) {
 }
 
 function makeFrameWithContent(key, value) {
-    const content = key + UNDERSCORE + value;
-    const border = repeatMinuses(MINUS, content.length);
+    const content = key + DIVIDER_BETWEEN_KEY_VALUE + value;
+    const border = repeat(MINUS, content.length);
 
     return PLUS + border + PLUS + os.EOL
          + PIPE + content + PIPE + os.EOL
          + PLUS + border + PLUS + os.EOL;
 }
 
-function showFrame() {
+function showFrames() {
     console.log(makeFrameWithContent('enable', 'true'));
     console.log(makeFrameWithContent('name', 'Bob'));
 }
 
-showFrame();
+showFrames();
