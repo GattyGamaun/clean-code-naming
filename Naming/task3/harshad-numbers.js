@@ -9,13 +9,13 @@ class HarshadNumbers {
     }
 
     static findSumOfDigits(number) {
-        let digit = 0;
+        let sumOfDigits = 0;
         while (number > 0) {
             let lastDigit = number % 10;
-            digit += lastDigit;
+            sumOfDigits += lastDigit;
             number = (number - lastDigit) / 10;
         }
-        return digit;
+        return sumOfDigits;
     }
 }
 
